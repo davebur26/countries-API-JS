@@ -20,7 +20,7 @@ var addCountriesToDropDown = function(countries) {
 }
 
 var addNeeborCountries = function(neeborCountries) {
-  
+
   var dropDown = document.getElementById("neebors");
 
   dropDown.innerHTML = ""
@@ -36,7 +36,7 @@ var makeRequest = function( url ) {
   var request = new XMLHttpRequest();
   request.open( "GET" , url );
   request.addEventListener( "load", function() {
-    var countries = JSON.parse( this.responseText );
+    var countries = JSON.parse( this.responseText ) || [];
     // addCountriesToList(countries)
     render(countries);
   })
@@ -52,7 +52,9 @@ var render = function(countries){
 
 
   var handleSelectChange = function() {
-    addNeeborCountries(savedCountry.borders)
+    if ( savedCountry ) {
+      addNeeborCountries(savedCountry.borders)
+    }
     var selectedCountryName = this.value;
     findCountryObject(selectedCountryName, countries);
   }
@@ -92,6 +94,8 @@ var writeContent = function(country) {
   var pTag2 = document.querySelector("#selectedDDPop")
   var pTag3 = document.querySelector("#selectedDDCapital")
 
+  if(country){
+
   var countryStringName = "Country Name: " + country.name
   var countryStringPop =  "Country Population: " + country.population
   var countryStringCapital = "Country Capital: " + country.capital
@@ -103,6 +107,7 @@ var writeContent = function(country) {
   pTag1.innerHTML = countryStringName
   pTag2.innerHTML = countryStringPop
   pTag3.innerHTML = countryStringCapital
+}
 }
 
 makeRequest(url)
